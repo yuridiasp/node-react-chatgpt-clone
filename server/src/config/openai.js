@@ -1,25 +1,22 @@
-const { Configuration, OpenAIApi } = require('openai')
-require("dotenv").config()
+const OpenAI = require('openai');
 
-module.exports = class openai{
+class Openai {
+    static configuration () {
+        const openai = new OpenAI({
+            apiKey: process.env.OPENAI_API_KEY
+        })
 
-	static configuration(){
-		const configuration = new Configuration({
-			apiKey: process.env.OPEN_AI_KEY,
-		})
+        return openai
+    }
 
-		return new OpenAIApi(configuration)
-	}
+    static textCompletion ({ prompt }) {
+        const objectModel = {
+            model: "gpt-3.5-turbo", // "gpt-3.5-turbo-16k-0613"
+            messages: [{ role: "user", content: `${prompt}`}],
+        }
 
-	static textCompletion ({prompt}) {
-    return 	{
-			model:"text-davinci-003",
-			prompt:`${prompt}`,
-			temperature:0,
-			max_tokens: 3500,
-			top_p:1,
-			frequency_penalty: 0.5,
-			presence_penalty: 0
-		}
-  }
+        return objectModel
+    }
 }
+
+module.exports = Openai
